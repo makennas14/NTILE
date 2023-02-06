@@ -1,0 +1,8 @@
+SELECT Agency.name, COUNT(Reports.report_type) reportCount,
+    NTILE(10) OVER(
+    ORDER BY COUNT(Reports.report_type) DESC) decile
+FROM auth_users Users
+JOIN auth_agencies Agency ON Users.agency_id = Agency.id
+JOIN platform_reporting_scheduled_reports Reports ON Users.id = Reports.user_id
+WHERE Reports.created_at >= 'September 01, 2022'
+GROUP BY Agency.name;
